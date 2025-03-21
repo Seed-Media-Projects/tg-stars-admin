@@ -4,6 +4,7 @@ import { AdminUserRole } from '@core/login/types';
 import HomeIcon from '@mui/icons-material/Home';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import MenuIcon from '@mui/icons-material/Menu';
+import RequestPageIcon from '@mui/icons-material/RequestPage';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import {
@@ -45,6 +46,12 @@ const menuItems = [
     path: '/config',
     text: 'Конфиг платежей',
     icon: SettingsIcon,
+    roles: [AdminUserRole.Admin],
+  },
+  {
+    path: '/requests',
+    text: 'Заявки',
+    icon: RequestPageIcon,
     roles: [AdminUserRole.Admin],
   },
   {

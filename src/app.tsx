@@ -38,6 +38,10 @@ const router = createBrowserRouter([
         path: 'accounts/create',
         lazy: () => import('@routes/accounts/create'),
       },
+      {
+        path: 'requests',
+        lazy: () => import('@routes/requests'),
+      },
     ],
   },
   {

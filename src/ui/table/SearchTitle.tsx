@@ -16,9 +16,8 @@ export const SearchTitle = ({ title, searchName = 'search' }: Props) => {
   const debouncedSearchTerm = useDebounce(searchValue, 1000);
 
   useEffect(() => {
-    setSearchParams({ search: debouncedSearchTerm });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearchTerm]);
+    setSearchParams({ [searchName]: debouncedSearchTerm });
+  }, [debouncedSearchTerm, searchName, setSearchParams]);
 
   return (
     <Box flexWrap="wrap" display="flex" alignItems="center">
