@@ -6,10 +6,10 @@ export const AXAPI = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
 });
 
-const token = LS.getItem(LSKeys.AuthToken, '');
+const authData = LS.getItem(LSKeys.AuthData, null);
 
-if (token) {
-  AXAPI.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+if (authData?.token) {
+  AXAPI.defaults.headers.common['Authorization'] = `Bearer ${authData.token}`;
 }
 
 AXAPI.interceptors.response.use(

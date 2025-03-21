@@ -1,9 +1,11 @@
+import { AuthResponse } from '@core/login/types';
+
 export enum LSKeys {
-  AuthToken = 'auth_stars_token',
+  AuthData = 'auth_stars_data',
 }
 
 export interface LSData {
-  [LSKeys.AuthToken]: string;
+  [LSKeys.AuthData]: AuthResponse | null;
 }
 
 const getItem = <K extends LSKeys>(key: K, defaultValue: LSData[K]): LSData[K] => {

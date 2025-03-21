@@ -46,7 +46,7 @@ const Actions = ({ account }: { account: UserListItem }) => {
             loading={loading}
             onClose={handleClose}
             onConfirm={() => {
-              deleteUserFX(account.id).then(() => {
+              deleteUserFX(account.tgUserId).then(() => {
                 handleClose();
                 navigate('.', { replace: true });
               });

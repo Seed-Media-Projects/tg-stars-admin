@@ -70,7 +70,7 @@ export const Component = () => {
         loading={loading}
         onClose={handleClose}
         onConfirm={() => {
-          deleteUserFX(user.id).then(() => {
+          deleteUserFX(user.tgUserId).then(() => {
             handleClose();
             navigate('.', { replace: true });
           });

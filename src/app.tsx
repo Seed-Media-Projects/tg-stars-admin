@@ -30,6 +30,14 @@ const router = createBrowserRouter([
         path: 'config/edit',
         lazy: () => import('@routes/config/edit'),
       },
+      {
+        path: 'accounts',
+        lazy: () => import('@routes/accounts'),
+      },
+      {
+        path: 'accounts/create',
+        lazy: () => import('@routes/accounts/create'),
+      },
     ],
   },
   {
