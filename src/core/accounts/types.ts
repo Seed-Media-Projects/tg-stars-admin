@@ -1,4 +1,4 @@
-import { AdminUserRole } from '@core/login/types';
+import { AdminUserRole, AdminUserStatus } from '@core/login/types';
 
 export type CreateAccountPayload = {
   username: string;
@@ -21,8 +21,3 @@ export type AccountItemStats = {
   requestType: 'premium' | 'stars';
   requestDuration: '1m' | '3m' | '6m' | '12m' | 'Unknown';
 };
-
-export enum AdminUserStatus {
-  Online = 'online',
-  Offline = 'offline',
-}

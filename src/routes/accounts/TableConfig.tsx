@@ -1,4 +1,5 @@
-import { AccountItem, AdminUserStatus, deleteAccountFX } from '@core/accounts';
+import { AccountItem, deleteAccountFX } from '@core/accounts';
+import { AdminUserStatus } from '@core/login/types';
 import CircleIcon from '@mui/icons-material/Circle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
