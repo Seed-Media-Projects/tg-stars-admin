@@ -44,3 +44,20 @@ export type RequestDataPremium = {
 };
 
 export type RequestData = RequestDataStars | RequestDataPremium;
+
+export type WorkRequest = {
+  id: number;
+  requestData: RequestData;
+  requestStatus: RequestStatus;
+  created: string;
+  updated: string;
+  user_id: number;
+};
+
+export type WorkRequestAssignItem = {
+  id: number;
+  user_request_id: number;
+  admin_user_account_id: number;
+  assign: string;
+  request: WorkRequest;
+};

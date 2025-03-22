@@ -4,50 +4,30 @@ import { useUnit } from 'effector-react';
 
 import { getActiveUser } from '@core/login/signin';
 import { AdminUserStatus } from '@core/login/types';
-import { fetchEventSource } from '@microsoft/fetch-event-source';
+import { getWorkRequestsListFX, startWorkFX, stopWorkFX } from '@core/requests';
 import CircleIcon from '@mui/icons-material/Circle';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
+import { WorkRequestsList } from './WorkRequestsList';
 
 export const ManagerLayout = () => {
   const authData = useUnit($authData)!;
-  const ctrlRef = useRef<AbortController | null>(null);
-  const [connected, setConnected] = useState(false);
+  const [connected, setConnected] = useState(authData.user.status === AdminUserStatus.Online);
 
-  const connectToSSE = () => {
+  const startWork = () => {
     if (connected) return;
-    const ctrl = new AbortController();
-    ctrlRef.current = ctrl;
-    fetchEventSource(`${import.meta.env.VITE_SERVER_URL}/admin/api/requests/work`, {
-      async onopen(response) {
-        if (response.ok && response.headers.get('content-type')?.includes('text/event-stream')) {
-          console.log('Connection opened');
-          setConnected(true);
-          getActiveUser();
-        }
-      },
-      onmessage(ev) {
-        console.log('Received:', ev.data);
-      },
-      onclose() {
-        console.log('Connection closed by server');
-        setConnected(false);
-      },
-      onerror(err) {
-        console.error('SSE error:', err);
-      },
-      headers: {
-        Authorization: `Bearer ${authData.token}`,
-      },
-      signal: ctrl.signal,
+
+    startWorkFX().then(() => {
+      getWorkRequestsListFX();
+      getActiveUser();
+      setConnected(true);
     });
   };
 
-  const disconnectFromSSE = () => {
-    if (ctrlRef.current) {
-      ctrlRef.current.abort();
-    }
-    setConnected(false);
-    getActiveUser();
+  const stopWork = () => {
+    stopWorkFX().then(() => {
+      getActiveUser();
+      setConnected(false);
+    });
   };
 
   return (
@@ -58,13 +38,12 @@ export const ManagerLayout = () => {
       </Box>
       <Box display="flex" alignItems="center" gap={2}>
         <Typography>Ваш статус сейчас:</Typography>
-        {authData.user.status === AdminUserStatus.Online && (
+        {connected ? (
           <>
             <CircleIcon color="success" />
             <Typography>Онлайн и принимаете заявки</Typography>
           </>
-        )}
-        {authData.user.status === AdminUserStatus.Offline && (
+        ) : (
           <>
             <CircleIcon color="error" />
             <Typography>Оффлайн и не принимаете заявки</Typography>
@@ -73,15 +52,17 @@ export const ManagerLayout = () => {
       </Box>
       <Box>
         {!connected ? (
-          <Button variant="contained" onClick={connectToSSE}>
+          <Button variant="contained" onClick={startWork}>
             ✅ Начать работу
           </Button>
         ) : (
-          <Button variant="contained" onClick={disconnectFromSSE}>
+          <Button variant="contained" onClick={stopWork}>
             🏁 Закончить работу
           </Button>
         )}
       </Box>
+
+      <WorkRequestsList connected={connected} />
     </Box>
   );
 };

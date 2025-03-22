@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Modal, Typography } from '@mui/material';
+import { Box, Button, ButtonOwnProps, CircularProgress, Modal, Typography } from '@mui/material';
 
 type Props = {
   open: boolean;
@@ -7,6 +7,10 @@ type Props = {
   loading: boolean;
   title: string;
   subtitle: string;
+  confirmText?: string;
+  cancelText?: string;
+  confirmColor?: ButtonOwnProps['color'];
+  cancelColor?: ButtonOwnProps['color'];
 };
 
 const style = {
@@ -21,7 +25,18 @@ const style = {
   p: 4,
 };
 
-export const ActionModal = ({ loading, onClose, onConfirm, open, subtitle, title }: Props) => {
+export const ActionModal = ({
+  loading,
+  onClose,
+  onConfirm,
+  open,
+  subtitle,
+  title,
+  confirmText = 'Confirm',
+  cancelText = 'Cancel',
+  cancelColor = 'secondary',
+  confirmColor = 'error',
+}: Props) => {
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
@@ -32,11 +47,11 @@ export const ActionModal = ({ loading, onClose, onConfirm, open, subtitle, title
           {subtitle}
         </Typography>
         <Box display="flex" justifyContent="center" mt={2} gap={2}>
-          <Button onClick={onClose} variant="contained" disabled={loading} color="secondary">
-            Cancel
+          <Button onClick={onClose} variant="contained" disabled={loading} color={cancelColor}>
+            {cancelText}
           </Button>
-          <Button onClick={onConfirm} disabled={loading} variant="contained" color="error">
-            {loading ? <CircularProgress size={24} color="primary" /> : 'confirm'}
+          <Button onClick={onConfirm} disabled={loading} variant="contained" color={confirmColor}>
+            {loading ? <CircularProgress size={24} color="primary" /> : confirmText}
           </Button>
         </Box>
       </Box>
