@@ -7,10 +7,13 @@ import { ActionModal } from '@ui/modal/ActionModal';
 import { useUnit } from 'effector-react';
 import { useState } from 'react';
 import { LoaderFunctionArgs, useLoaderData, useNavigate } from 'react-router-dom';
+import { UserRequests } from './UserRequests';
+import { UserTransactions } from './UserTransactions';
 
 export const Component = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [tab, setTab] = useState<'requests' | 'transactions'>('requests');
   const { user } = useLoaderData() as { user: UserInfo | null };
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -49,23 +52,17 @@ export const Component = () => {
       </Box>
       <Typography gutterBottom>Language: {user.language}</Typography>
       <Divider sx={{ my: 2 }} />
-      {/* <Typography variant="h6" gutterBottom>
-        User crash games
-      </Typography>
-      {user.userGames ? (
-        <>
-          <Typography gutterBottom>Total games: {user.userGames.length}</Typography>
-          <Typography gutterBottom>Winning games: {user.userGames.filter(g => g.winner).length}</Typography>
-          <Typography gutterBottom>
-            Last 5 bet+ratio:{' '}
-            {user.userGames
-              .slice(0)
-              .slice(-5)
-              .map(g => `bet -> ${g.bet} and ratio -> ${g.ratio}`)
-              .join(', ')}
-          </Typography>
-        </>
-      ) : null} */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Button onClick={() => setTab('requests')} variant={tab === 'requests' ? 'contained' : 'outlined'}>
+          Заявки
+        </Button>
+        <Button onClick={() => setTab('transactions')} variant={tab === 'transactions' ? 'contained' : 'outlined'}>
+          Транзакции
+        </Button>
+      </Box>
+      <Divider sx={{ my: 2 }} />
+      {tab === 'requests' && <UserRequests requests={user.requests} />}
+      {tab === 'transactions' && <UserTransactions transactions={user.transactions} />}
       <ActionModal
         loading={loading}
         onClose={handleClose}
