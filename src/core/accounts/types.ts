@@ -16,8 +16,8 @@ export type AccountItem = {
 
 export type AccountItemStats = {
   adminUserId: number;
-  requestsCount: number;
-  sumAmount: number;
+  requestsCount: string;
+  sumAmount: string;
   requestType: 'premium' | 'stars';
   requestDuration: '1m' | '3m' | '6m' | '12m' | 'Unknown';
 };

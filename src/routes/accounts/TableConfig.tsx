@@ -35,7 +35,7 @@ export const tableAccountsConfig: ColumnShape<AccountItem>[] = [
     width: 120,
     sortable: false,
     cellRenderer: ({ rowData }) => {
-      return <div>{rowData.stats.reduce((acc, item) => acc + item.requestsCount, 0)}</div>;
+      return <div>{rowData.stats.reduce((acc, item) => acc + Number(item.requestsCount), 0)}</div>;
     },
   },
   {
@@ -45,7 +45,9 @@ export const tableAccountsConfig: ColumnShape<AccountItem>[] = [
     sortable: false,
     cellRenderer: ({ rowData }) => {
       return (
-        <div>{rowData.stats.filter(s => s.requestType === 'stars').reduce((acc, item) => acc + item.sumAmount, 0)}</div>
+        <div>
+          {rowData.stats.filter(s => s.requestType === 'stars').reduce((acc, item) => acc + Number(item.sumAmount), 0)}
+        </div>
       );
     },
   },
@@ -60,16 +62,16 @@ export const tableAccountsConfig: ColumnShape<AccountItem>[] = [
         (acc, item) => {
           switch (item.requestDuration) {
             case '12m':
-              acc.twelve += item.sumAmount;
+              acc.twelve += Number(item.requestsCount);
               break;
             case '6m':
-              acc.six += item.sumAmount;
+              acc.six += Number(item.requestsCount);
               break;
             case '3m':
-              acc.three += item.sumAmount;
+              acc.three += Number(item.requestsCount);
               break;
             case '1m':
-              acc.one += item.sumAmount;
+              acc.one += Number(item.requestsCount);
               break;
 
             default:
