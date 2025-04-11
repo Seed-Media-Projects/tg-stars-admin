@@ -1,30 +1,37 @@
-# React + TypeScript + Vite
+1. add subdomain e.g. admin.example.com
+2. add nginx config
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+```
+server {
+  listen 80;
+  server_name admin.example.com;
 
-Currently, two official plugins are available:
+  root /var/www/tg-stars-admin/dist;
+  index index.html;
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
 
-## Expanding the ESLint configuration
+  # Optional: handle static files with longer caching
+  location ~* \.(?:ico|css|js|gif|jpe?g|png|woff2?|eot|ttf|otf|svg|webp)$ {
+    try_files $uri =404;
+    expires 6M;
+    access_log off;
+    add_header Cache-Control "public";
+  }
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
+  # Optional: gzip
+  gzip on;
+  gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
 }
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+3. go to /var/www and git clone git@github.com:Seed-Media-Projects/tg-stars-admin.git
+4. cd /var/www/tg-stars-admin
+5. pnpm i
+6. add .env
+```
+VITE_SERVER_URL=https://api.swiftstars.vip
+```
+7. pnpm build
